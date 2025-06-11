@@ -1,0 +1,102 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#define TAUX_A 20 
+#define TAUX_B 10
+#define TAUX_C 5
+
+int main() {
+    char **NomAF, **NomRA, ***NE, ***IndiceP, temp[50], cmp1[50], cmp2[50], cmp3[50];
+    int i, j, NA, *NBE, **NPF, **IndP, *total, S = 0, l1, l2, a;
+
+    printf("Entrer le nombre des ateliers : ");
+    scanf("%d", &NA);
+
+    NomAF = malloc(NA * sizeof(char *));
+    NomRA = malloc(NA * sizeof(char *));
+    NE = malloc(NA * sizeof(char **));
+    IndiceP = malloc(NA * sizeof(char **));
+    NPF = malloc(NA * sizeof(int *));
+    IndP = malloc(NA * sizeof(int *));
+    total = malloc(NA * sizeof(int));
+    NBE = malloc(NA * sizeof(int)); // new: store number of employees per workshop
+
+    for (i = 0; i < NA; i++) {
+        total[i] = 0;
+
+        printf("Entrer le nom d'atelier %d : ", i + 1);
+        scanf("%s", cmp1);
+        l1 = strlen(cmp1) + 1;
+
+        printf("Entrer le nom du responsable de l'atelier %d : ", i + 1);
+        scanf("%s", cmp2);
+        l2 = strlen(cmp2) + 1;
+
+        NomAF[i] = malloc(l1 * sizeof(char));
+        NomRA[i] = malloc(l2 * sizeof(char));
+
+        if (NomAF[i] && NomRA[i]) {
+            strcpy(NomAF[i], cmp1);
+            strcpy(NomRA[i], cmp2);
+        }
+
+        printf("Entrer le nombre des employés de l'atelier %d : ", i + 1);
+        scanf("%d", &NBE[i]);
+
+        NE[i] = malloc(NBE[i] * sizeof(char *));
+        IndiceP[i] = malloc(NBE[i] * sizeof(char *));
+        NPF[i] = malloc(NBE[i] * sizeof(int));
+        IndP[i] = malloc(NBE[i] * sizeof(int));
+
+        for (j = 0; j < NBE[i]; j++) {
+            printf("Entrer le nom de l'employé %d de l'atelier %d : ", j + 1, i + 1);
+            scanf("%s", cmp3);
+            a = strlen(cmp3) + 1;
+
+            NE[i][j] = malloc(a * sizeof(char));
+            if (NE[i][j]) {
+                strcpy(NE[i][j], cmp3);
+            }
+
+            printf("Entrer le nombre de pièces pour l'employé %d : ", j + 1);
+            scanf("%d", &NPF[i][j]);
+
+            printf("Entrer l'indice des pièces (A/B/C) pour l'employé %d : ", j + 1);
+            IndiceP[i][j] = malloc(2 * sizeof(char)); // space for "A\0"
+            scanf("%s", IndiceP[i][j]);
+
+            if (strcmp(IndiceP[i][j], "A") == 0) {
+                IndP[i][j] = NPF[i][j] * TAUX_A;
+            } else if (strcmp(IndiceP[i][j], "B") == 0) {
+                IndP[i][j] = NPF[i][j] * TAUX_B;
+            } else if (strcmp(IndiceP[i][j], "C") == 0) {
+                IndP[i][j] = NPF[i][j] * TAUX_C;
+            } else {
+                IndP[i][j] = 0;
+            }
+
+            total[i] += IndP[i][j];
+        }
+
+        S += total[i];
+    }
+
+    printf("\nFICHE DE GESTION DES INDEMNITÉS DES EMPLOYÉS DE MOTOPROD\n");
+
+    for (i = 0; i < NA; i++) {
+        printf("\nNom Atelier de Fabrication %d : %s\tNom Responsable : %s\n", i + 1, NomAF[i], NomRA[i]);
+        printf("--------------------------------------------------------------\n");
+        printf("Nom Employé\tNPF\tIndice\tIndemnité (DH)\n");
+
+        for (j = 0; j < NBE[i]; j++) {
+            printf("%s\t\t%d\t%s\t%d\n", NE[i][j], NPF[i][j], IndiceP[i][j], IndP[i][j]);
+        }
+
+        printf("Total des indemnités pour l'atelier %d : %d DH\n", i + 1, total[i]);
+    }
+
+    printf("\nTotal des indemnités pour tous les ateliers : %d DH\n", S);
+
+    return 0;
+}
