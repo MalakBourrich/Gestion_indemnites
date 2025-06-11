@@ -42,7 +42,7 @@ gcc -o motoprod motoprod.c
 ./motoprod
 
 ```
-###📌 Example Input Flow
+### 📌 Example Input Flow
 Entrer le nombre des ateliers : 2
 Entrer le nom d'atelier 1 : Mecanique
 Entrer le nom du responsable de l'atelier 1 : Karim
@@ -50,6 +50,6 @@ Entrer le nombre des employés de l'atelier 1 : 2
 ...
 
 
-###📋 Output Example
+### 📋 Output Example
 ![image](https://github.com/user-attachments/assets/0a827c4e-b8b8-4879-a9be-eb8e4148fb06)
 
